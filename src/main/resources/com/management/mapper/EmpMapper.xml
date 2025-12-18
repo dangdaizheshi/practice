@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.management.mapper.EmpMapper">
+    <select id="getEmp" resultType="com.management.VO.EmpVO">
+        select e.*, d.name as dept_name from emp e left join dept d on e.dept_id = d.id
+        <where>
+            <if test="name != null">
+                and e.name like concat('%',#{name},'%')
+            </if>
+            <if test="gender != null">
+                and e.gender = #{gender}
+            </if>
+            <if test="begin != null and end != null">
+                and e.entry_date between #{begin} and #{end}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteEmpById">
+        delete from emp where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="addEmp" useGeneratedKeys="true" keyProperty="id">
+        insert into emp(name, username, gender, phone, password, image, job, salary, entry_date, dept_id, create_time, update_time)
+        values (#{name}, #{username}, #{gender}, #{phone}, #{password}, #{image}, #{job}, #{salary}, #{entryDate}, #{deptId}, #{createTime}, #{updateTime})
+    </insert>
+
+    <select id="getEmpById" resultType="com.management.VO.EmpVO">
+        select id, name, username, gender, password, image, job, salary, entry_date, dept_id, create_time, update_time from emp where id = #{id}
+    </select>
+
+    <update id="updateEmp">
+        update emp
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="username != null">
+                username = #{username},
+            </if>
+            <if test="gender != null">
+                gender = #{gender},
+            </if>
+            <if test="phone != null">
+                phone = #{phone},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="image != null">
+                image = #{image},
+            </if>
+            <if test="job != null">
+                job = #{job},
+            </if>
+            <if test="salary != null">
+                salary = #{salary},
+            </if>
+            <if test="entryDate != null">
+                entry_date = #{entryDate},
+            </if>
+            <if test="deptId != null">
+                dept_id = #{deptId},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>
