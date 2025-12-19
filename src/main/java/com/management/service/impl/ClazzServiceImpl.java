@@ -12,6 +12,6 @@ public class ClazzServiceImpl implements ClazzService {
     private ClazzMapper clazzMapper;
     @Override
     public void addClazz(Clazz clazz) {
-        clazzMapper.insert(clazz);
+        //clazzMapper.insert(clazz);
     }
 }
